@@ -76,7 +76,7 @@ export async function generateMetadata({
 }: {
   params: { shop: string };
 }): Promise<Metadata> {
-  const shop: ShopMeta | null = await getShop(params.shop);
+  const shop: ShopMeta | null = await getShop("tosto");
 
   if (!shop) {
     // Provide default metadata in case shop data is not available
@@ -155,7 +155,7 @@ export default async function ShopLayout({
   children: React.ReactNode;
   params: { shop: string };
 }) {
-  const shop: ShopMeta | null = await getShop(params.shop);
+  const shop: ShopMeta | null = await getShop("tosto");
   const LocalShop: ShopDataP | null = await getLocalShopData(params.shop);
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value;
