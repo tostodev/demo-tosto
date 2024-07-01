@@ -1,4 +1,4 @@
-export interface ShopData {
+export interface ShopDataT {
     ShopName: string;
     ShopLocation?: string;
     Logo?: string;

@@ -8,7 +8,7 @@ import ListAll from "@/components/ListAll";
 import withAuth from "@/AuthWrapper";
 
 function Component() {
-  interface ShopData {
+  interface ShopDataT {
     ShopName: string;
     ShopLocation?: string;
     Logo?: string;
@@ -18,9 +18,9 @@ function Component() {
   const [add, setAdd] = useState<string>("upload");
   const [urlIdentifiers, setUrlIdentifiers] = useState<string[]>([]);
   const [usernameError, setUsernameError] = useState<boolean>(false);
-  const [allShops, setAllShops] = useState<ShopData[]>([]);
+  const [allShops, setAllShops] = useState<ShopDataT[]>([]);
 
-  const [shopData, setShopData] = useState<ShopData>({
+  const [shopData, setShopData] = useState<ShopDataT>({
     ShopName: "",
     ShopLocation: "",
     Logo: "",
@@ -115,7 +115,7 @@ function Component() {
       .select("ShopName, url_identifier");
     if (data) {
       setAllShops(data);
-      const urls = data.map((shop: ShopData) => shop.url_identifier);
+      const urls = data.map((shop: ShopDataT) => shop.url_identifier);
       setUrlIdentifiers(urls);
     }
     if (error) {

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { ShopData } from "@/type";
+import { ShopDataT } from "@/type";
 import {
   Table,
   TableBody,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 interface ListAllProps {
-  shops: ShopData[];
+  shops: ShopDataT[];
 }
 export default function ListAll({ shops }: ListAllProps) {
   return (
