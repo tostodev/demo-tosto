@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: calc(16 * 100vw / 1440);
+}
+
+@media all and (max-width: 660px) {
+  html {
+    font-size: calc(16 * 100vw / 400);
+  }
+}
+
+.reward-text {
+  position: relative;
+  display: inline-block;
+  animation: glimmer 2s infinite;
+}
+
+.gift-emoji {
+  display: inline-block;
+  margin-left: 5px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes glimmer {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.ticket {
+  position: relative;
+  overflow: hidden;
+}
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  background: #ffffff;
+  z-index: 10;
+}
+.ticket::before {
+  top: 45%;
+  left: 0;
+  transform: translateY(-50%);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.ticket::after {
+  top: 45%;
+  right: 0;
+  transform: translateY(-50%);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Dashed line in the center */
+.dashed-line {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  width: 100%;
+  border-top: 1px dashed #00000069;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
