@@ -63,7 +63,7 @@ async function getShop(slug: string): Promise<LoyaltyProgram | null> {
 
 export default async function page({ params }: { params: { shop: string } }) {
   const shop = params.shop;
-  const LoyaltyData: LoyaltyProgram | null = await getShop(shop);
+  const LoyaltyData: LoyaltyProgram | null = await getShop("tosto");
   const LocalShopData: ShopDataP | null = await getLocalShopData(shop);
   if (!LoyaltyData) {
     return (

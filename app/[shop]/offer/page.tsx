@@ -58,7 +58,7 @@ async function getShop(slug: string): Promise<PrizeData | null> {
 
 export default async function page({ params }: { params: { shop: string } }) {
   const shop = params.shop;
-  const offerData: PrizeData | null = await getShop(shop);
+  const offerData: PrizeData | null = await getShop("tosto");
 
   console.log(offerData);
 
