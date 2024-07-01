@@ -51,9 +51,9 @@ async function getShop(slug: string): Promise<ShopMeta | null> {
       body: JSON.stringify({ shop_slug: slug }),
     });
 
-    if (!res.ok) {
-      notFound(); // Show 404 page if shop is not found
-    }
+    // if (!res.ok) {
+    //   notFound(); // Show 404 page if shop is not found
+    // }
 
     const text = await res.text();
     try {
@@ -64,7 +64,7 @@ async function getShop(slug: string): Promise<ShopMeta | null> {
       return null;
     }
   } catch (error) {
-    notFound(); // Show 404 page if shop is not found
+    // notFound(); // Show 404 page if shop is not found
 
     console.error("Failed to fetch shop data:", error);
     return null;
@@ -177,9 +177,9 @@ export default async function ShopLayout({
         shopArray = [];
       }
 
-      if (!shopArray.includes(params.shop)) {
-        login = true;
-      }
+      // if (!shopArray.includes(params.shop)) {
+      //   login = true;
+      // }
     }
   }
   console.log(shopArray, "aarara");
@@ -224,7 +224,7 @@ export default async function ShopLayout({
           <Login
             name={LocalShop.ShopName || ""}
             token={token}
-            slug={params.shop}
+            slug={"tosto"}
             shops={shopArray}
           />
         ) : (
