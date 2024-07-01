@@ -129,7 +129,7 @@ export default function Page({ params }: { params: { code: string } }) {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await axios.post(`${API_URL}/token`, {
+        const response = await axios.post(`${API_URL}/tokenDemo`, {
           uniquecode: params.code,
         });
         console.log(response, "response");
