@@ -8,6 +8,8 @@ import { ShopDataP } from "@/type";
 import { supabase } from "@/utils/supabase/client";
 
 import RefferButton from "@/components/referral/RefferButton";
+import FeedbackButton from "@/components/FeedbackButton";
+
 type PageData = {
   shopname: string;
   shopplace: string;
@@ -17,7 +19,12 @@ type PageData = {
   shoplogo: string;
   shopcolor: string;
   username: string;
+  total_points: number;
+  clientdb_id: number;
+  userdb_id: number;
   feedback_prize: string;
+  points_per_referral: number;
+  points_after_visit: number;
   feedback_terms: string[];
   feedback_status: boolean;
   googlereview: boolean;
@@ -28,6 +35,7 @@ type PageData = {
   referral_status: boolean;
   loyalty_status: boolean;
   loyalty_points: number;
+  loyalty_id: string;
   feedback_redirect: string;
   menu: boolean;
 };
@@ -263,7 +271,6 @@ export default async function page({
               (shopData.googlereview ? (
                 <Link
                   href={"/" + shop + "/offer"}
-                  target="_blank"
                   className="flex w-full items-center justify-between gap-3 rounded-2xl border p-4 px-5"
                 >
                   <div className="flex items-center justify-start gap-3">
@@ -282,7 +289,7 @@ export default async function page({
                         d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 0 0 4.875-4.875V12m6.375 5.25a4.875 4.875 0 0 1-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 0 0 1.5-1.5V5.25a1.5 1.5 0 0 0-1.5-1.5H3.75a1.5 1.5 0 0 0-1.5 1.5v13.5a1.5 1.5 0 0 0 1.5 1.5Zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 0 1 3.182 3.182ZM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 1 1 3.182-3.182Z"
                       />
                     </svg>
-                    <h3 className="flex-inline font-body4 text-[.9rem] font-medium">
+                    <h3 className="flex-inline font-body4 text-base font-medium">
                       Redeem your all rewards
                     </h3>
                   </div>
@@ -300,41 +307,17 @@ export default async function page({
                   </svg>
                 </Link>
               ) : (
-                // <ShineBorder
-                //   className="relative"
-                //   color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-                // >
-                <Link
-                  href={shopData.feedback_redirect}
-                  target="_blank"
-                  className="flex w-full items-center justify-center gap-3 rounded-2xl border p-4 px-5"
-                >
-                  <img src="/google-icon-review.png" className="w-16" />
-                  <h3 className="flex-inline font-body4 text-[.9rem] font-medium">
-                    Share your experience and enjoy a{" "}
-                    <span className="rounded-full bg-yellow-50 px-2 py-0.5 font-semibold">
-                      {shopData.feedback_prize}
-                    </span>
-                  </h3>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="size-10 text-yellow-500"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </Link>
-                // </ShineBorder>
+                <FeedbackButton
+                  link={shopData.feedback_redirect}
+                  prize={shopData.feedback_prize}
+                  shopSlug={params.shop}
+                  authToken={authToken ? authToken.value : ""}
+                />
               ))}
 
             {shopData.referral_status && (
               <div
-                style={{ background: LocalShopData?.Colour }}
+                style={{ background: shopData.shopcolor }}
                 className="shadow-xs w-full rounded-[1.1rem]"
               >
                 <div className="flex flex-col items-center justify-center rounded-2xl border bg-white/[98%]">
@@ -356,32 +339,37 @@ export default async function page({
                       </svg>
                     </div>
                     <h3 className="font-body4 text-[.9rem] font-semibold">
-                      Refer a friend with a fresh lime gift and earn exciting
-                      rewards.
+                      Get Loyalty Points by Gifting a {shopData.arrival_reward}{" "}
+                      with Your Friend! 🎁
                     </h3>
                   </div>
                   <div className="box-shadow w-full rounded-2xl border-t bg-white pb-6 pt-4 font-body4">
-                    <div className="grid grid-cols-2 gap-4 px-6 text-center">
-                      {shopData.referral_reward.map((reward, index) => (
-                        <>
-                          <h4 className="text-base font-medium">
-                            {reward.no_of_referral} Referral
-                          </h4>
-                          <p className="reward-text py-.05 flex items-center rounded-full bg-orange-50 px-2 pl-4 text-left text-sm">
-                            {reward.reward}
-                            <span className="gift-emoji">🎁</span>
-                          </p>
-                        </>
-                      ))}
+                    <div className="grid grid-cols-3 gap-4 px-6 text-center">
+                      <>
+                        <h4 className="col-span-2 text-left text-base font-medium">
+                          Share a gift with a friend
+                        </h4>
+                        <p className="reward-text col-span-1 flex items-center rounded-full bg-orange-50 px-1 text-center text-sm font-semibold">
+                          100 points
+                        </p>
+                        <h4 className="col-span-2 text-left text-base font-medium">
+                          A friend visits the shop
+                        </h4>
+                        <p className="reward-text col-span-1 flex items-center rounded-full bg-orange-50 px-1 text-center text-sm font-semibold">
+                         200 points
+                        </p>
+                      </>
                     </div>
                     <div className="mt-4 flex items-center justify-center gap-4 px-10">
                       <RefferButton
-                        logoImageUrl={LocalShopData.Logo}
-                        shopColor={LocalShopData.Colour}
-                        cafeName={LocalShopData.ShopName}
-                        cafeLocation={LocalShopData.ShopLocation}
+                        logoImageUrl={shopData.shoplogo}
+                        shopColor={shopData.shopcolor}
+                        cafeName={shopData.shopname}
+                        cafeLocation={shopData.shopplace}
                         giftName={shopData.arrival_reward}
                         senderName={shopData.username}
+                        clientdb_id={shopData.clientdb_id}
+                        userdb_id={shopData.userdb_id}
                       />
 
                       {/* <button className="w-full">Refer Now</button> */}

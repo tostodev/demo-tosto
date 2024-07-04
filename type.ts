@@ -143,6 +143,7 @@ export type LoyaltyProgram = {
   };
 };
 
+
 export type PrizeData = {
   prizeData: {
     username: string;
@@ -152,7 +153,17 @@ export type PrizeData = {
     }[];
     referral_points: number;
     refer_person: string;
+    arrival_reward: string;
+    shopname: string;
+    clientdb_id: number;
+    userdb_id: number;
+    shopplace: string;
+    shoplogo: string;
+    no_of_referral: number;
+    points_per_referral: number;
+    points_after_visit: number;
     userid: string;
+    total_points: number;
     refer_person_phone: number;
     arrival_status: boolean;
     referral_status: boolean;
